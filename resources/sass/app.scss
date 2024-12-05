@@ -1,0 +1,70 @@
+@import 'bootstrap/scss/bootstrap.scss';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+footer {
+    padding-top: 2em;
+    padding-bottom: 0.5em;
+    text-align: center;
+}
+
+.monitor-border {
+    border: 12px solid #000;
+    border-radius: 5px;
+}
+
+.processing_info {
+    font-size: 0.75em !important;
+}
+
+.processing_info span:last-child {
+    margin-top: 0.25em;
+}
+
+body[data-bs-theme=dark] .loader {
+    border: 4px dotted #FFF !important;
+}
+
+.loader {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 4px dotted #000;
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+    margin-top: 2px;
+    animation: rotation 2s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+.table td {
+    vertical-align: middle;
+}
+
+#drop_zone {
+    margin-top: 5px;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    padding: 25px;
+    text-align: center;
+    font-size: 16px;
+    color: #ccc;
+}
+
+#drop_zone.dragover {
+    border-color: #000;
+    color: #000;
+}
+
+.fading {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}

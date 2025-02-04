@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('schedules', function (Blueprint $table) {
-            $table->boolean('delete_presentation')->default(false);
+        Schema::create('templates', function (Blueprint $table) {
+            $table->id();
+            $table->text('html_content');
+            $table->text('plain_content');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('schedules', function (Blueprint $table) {
-            $table->dropColumn('delete_presentation');
-        });
+        Schema::dropIfExists('templates');
     }
 };

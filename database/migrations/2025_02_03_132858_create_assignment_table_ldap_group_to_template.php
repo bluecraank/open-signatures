@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('presentations', function (Blueprint $table) {
-            $table->integer('total_slides')->default(0);
+        Schema::create('ldap_group_to_templates', function (Blueprint $table) {
+            $table->id();
+            $table->string('ldap_group');
+            $table->integer('template_id')->foreign('template_id')->references('id')->on('templates');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('presentations', function (Blueprint $table) {
-            $table->dropColumn('total_slides');
-        });
+        Schema::dropIfExists('ldap_group_to_templates');
     }
 };

@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('presentation_id');
-            $table->json('devices');
-            $table->json('groups');
+            $table->integer('template_id');
+            $table->json('ldap_users');
+            $table->json('ldap_groups');
             $table->timestamp('start_time');
             $table->timestamp('end_time');
-            $table->boolean('enabled')->default(true);
             $table->timestamps();
         });
     }

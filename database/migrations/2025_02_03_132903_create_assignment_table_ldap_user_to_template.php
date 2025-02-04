@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('slides', function (Blueprint $table) {
+        Schema::create('ldap_user_to_templates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('presentation_id')->on('presentations')->constrained();
-            $table->string('name_on_disk');
-            $table->string('name');
-            $table->integer('order');
+            $table->string('ldap_user');
+            $table->integer('template_id')->foreign('template_id')->references('id')->on('templates');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('slides');
+        Schema::dropIfExists('ldap_user_to_templates');
     }
 };

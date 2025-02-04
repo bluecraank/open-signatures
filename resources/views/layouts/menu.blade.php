@@ -7,31 +7,22 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                @can('read devices')
+                @can('read templates')
                     <li class="nav-item">
-                        <a href="{{ route('devices.index') }}"
-                            class="nav-link @if (str_contains(\Request::route()->getName(), 'devices.')) active @endif">
-                            {{ __('Devices') }}
+                        <a href="{{ route('templates.index') }}"
+                            class="nav-link @if (str_contains(\Request::route()->getName(), 'templates.')) active @endif">
+                            {{ __('Templates') }}
                         </a>
                     </li>
                 @endcan
 
                 @can('read groups')
-                    <li class="nav-item">
-                        <a href="{{ route('groups.index') }}"
-                            class="nav-link @if (str_contains(\Request::route()->getName(), 'groups.')) active @endif">
-                            {{ __('Groups') }}
-                        </a>
-                    </li>
-                @endcan
-
-                @can('read presentations')
-                    <li class="nav-item">
-                        <a href="{{ route('presentations.index') }}"
-                            class="nav-link @if (str_contains(\Request::route()->getName(), 'presentations.')) active @endif">
-                            {{ __('Templates') }}
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a href="{{ route('groups.index') }}"
+                        class="nav-link @if (str_contains(\Request::route()->getName(), 'groups.')) active @endif">
+                        {{ __('Groups') }}
+                    </a>
+                </li>
                 @endcan
 
                 @can('read schedules')
@@ -50,9 +41,6 @@
                             {{ __('Settings') }}
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ route('settings.index') }}" class="dropdown-item">
-                                    {{ __('Monitorsettings') }}
-                                </a></li>
                             @can('read users')
                                 <li><a href="{{ route('users.index') }}" class="dropdown-item">
                                         {{ __('Users') }}
@@ -64,12 +52,6 @@
                                     </a>
                                 </li>
                             @endcan
-                            @can('read logs')
-                                <li><a href="{{ route('presentations.ongoing') }}" class="dropdown-item">
-                                        {{ __('Ongoing processing') }}
-                                    </a>
-                                </li>
-                            @endcan
                         </ul>
                     </li>
                 @endcan
@@ -77,9 +59,6 @@
 
 
             <ul class="navbar-nav ms-auto">
-                <div class="nav-item d-flex align-items-center">
-                    @livewire('poll-presentation-process')
-                </div>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">

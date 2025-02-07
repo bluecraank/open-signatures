@@ -40,15 +40,20 @@ class Group extends Model
         });
     }
 
-    protected $fillable = ['name', 'presentation_id', 'created_by'];
+    protected $fillable = ['name', 'template_id', 'created_by', 'any_user', 'any_group'];
 
-    public function presentation()
+    public function template()
     {
-        return $this->belongsTo(Presentation::class);
+        return $this->belongsTo(Template::class);
     }
 
-    public function devices()
+    public function users()
     {
-        return $this->hasMany(Device::class);
+        return $this->belongsToMany(ADUser::class, 'aduser_group', 'group_id', 'aduser_id');
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(ADGroup::class, 'adgroup_group', 'group_id', 'adgroup_id');
     }
 }

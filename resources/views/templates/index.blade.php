@@ -20,6 +20,7 @@
                         <tr>
                             <th>Name</th>
                             <th>{{ __('Used by') }}</th>
+                            <th>{{ __('Created by') }}</th>
                             <th>{{ __('Actions') }}</th>
                         </tr>
                     </thead>
@@ -27,22 +28,21 @@
                     <tbody>
                         @foreach ($templates as $template)
                             <tr>
-                                <td>{{ $group->name }}</td>
-                                <td>{{ $group->devices->count() }}</td>
-                                <td>{{ $group->presentation?->name ?? __('No template assigned') }}</td>
-                                <td>{{ $group->created_by }}</td>
+                                <td>{{ $template->name }}</td>
+                                <td>{{ $template->groupList() }}</td>
+                                <td>{{ $template->created_by }}</td>
                                 <td class="actions-cell">
 
-                                    <form action="{{ route('groups.destroy', ['id' => $group->id]) }}" method="POST"
-                                        onsubmit="return confirm('{{ __('Are you sure to delete this group?') }}')">
+                                    <form action="{{ route('templates.destroy', ['id' => $template->id]) }}" method="POST"
+                                        onsubmit="return confirm('{{ __('Are you sure to delete this template?') }}')">
                                         @method('DELETE')
                                         @csrf
-                                        @can('read groups')
+                                        @can('read templates')
                                             <a class="btn btn-primary btn-sm"
-                                                href="{{ route('groups.update', ['id' => $group->id]) }}"><i
+                                                href="{{ route('templates.update', ['id' => $template->id]) }}"><i
                                                     class="bi-pen"></i></a>
                                         @endcan
-                                        @can('delete groups')
+                                        @can('delete templates')
                                             <button class="btn btn-danger btn-sm" type="submit"><i class="bi-trash"></i></button>
                                         @endcan
                                     </form>

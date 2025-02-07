@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('template_id')->nullable();
+            $table->string('created_by')->nullable();
+            $table->boolean('any_user')->default(false);
+            $table->boolean('any_group')->default(false);
             $table->timestamps();
         });
     }

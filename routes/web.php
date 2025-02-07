@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\LdapAttributeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,6 +56,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('groups')->group(function () {
         Route::get('/', [GroupController::class, 'index'])->middleware('can:read groups')->name('groups.index');
         Route::get('/create', [GroupController::class, 'create'])->middleware('can:create groups')->name('groups.create');
+        Route::post('/', [GroupController::class, 'store'])->middleware('can:create groups')->name('groups.store');
         Route::get('/{id}', [GroupController::class, 'show'])->middleware('can:read groups')->name('groups.show');
         Route::put('/{id}', [GroupController::class, 'update'])->middleware('can:update groups')->name('groups.update');
         Route::delete('/{id}', [GroupController::class, 'destroy'])->middleware('can:delete groups')->name('groups.destroy');
@@ -73,6 +75,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/', [LogController::class, 'index'])->name('logs.index');
     });
 });
+
+Route::get('/ldap', [LdapAttributeController::class, 'getGroupsFromUser'])->middleware('auth:sanctum');
 
 Auth::routes();
 

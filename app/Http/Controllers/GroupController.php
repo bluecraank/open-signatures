@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ADGroup;
+use App\Models\ADUser;
 use App\Models\Device;
 use App\Models\Group;
 use App\Models\Log;
-use App\Models\Presentation;
+use App\Models\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,9 +27,10 @@ class GroupController extends Controller
      */
     public function create()
     {
-        $presentations = Presentation::get();
-        $devices = Device::all();
-        return view('groups.create', compact('presentations', 'devices'));
+        $templates = Template::all();
+        $ldap_users = ADUser::all();
+        $ldap_groups = ADGroup::all();
+        return view('groups.create', compact('templates', 'ldap_users', 'ldap_groups'));
     }
 
     /**
@@ -37,22 +40,44 @@ class GroupController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:groups|min:2|max:255',
-            'presentation_id' => 'required|exists:presentations,id',
-            'devices' => 'nullable|array',
+            'template_id' => 'required|exists:templates,id',
+            'users' => 'nullable|array',
+            'groups' => 'nullable|array',
         ]);
+
+        $any_user = false;
+        $any_group = false;
+
+        // Add users to template
+        if ($request->users) {
+            foreach ($request->users as $user_id) {
+                if ($user_id == "*") {
+                    $any_user = true;
+                }
+            }
+        }
+
+        if ($request->groups) {
+            foreach ($request->groups as $group_id) {
+                if ($group_id == "*") {
+                    $any_group = true;
+                }
+            }
+        }
 
         $group = Group::create([
             'name' => $request->name,
-            'presentation_id' => $request->presentation_id,
+            'template_id' => $request->template_id,
             'created_by' => Auth::user()->name,
+            'any_user' => $any_user,
+            'any_group' => $any_group,
         ]);
 
-        if ($request->devices) {
-            foreach ($request->devices as $device_id) {
-                $device = Device::find($device_id);
-                if(!$device) continue;
-                $device->group_id = $group->id;
-                $device->save();
+        if ($request->users && !$any_user) {
+            foreach ($request->users as $user_id) {
+                $user = ADUser::whereId($user_id)->first();
+                if (!$user) continue;
+                $group->users()->attach($user);
             }
         }
 
@@ -65,7 +90,7 @@ class GroupController extends Controller
     public function show(string $id)
     {
         $group = Group::findOrFail($id);
-        $devices = Device::all();
+        // $devices = Device::all();
         $presentations = Presentation::get();
 
         return view('groups.show', compact('group', 'devices', 'presentations'));
@@ -99,7 +124,7 @@ class GroupController extends Controller
         if ($request->devices) {
             foreach ($request->devices as $device_id) {
                 $device = Device::find($device_id);
-                if(!$device) continue;
+                if (!$device) continue;
                 $device->group_id = $group->id;
                 $device->save();
             }
@@ -108,7 +133,7 @@ class GroupController extends Controller
         $ip = request()->ip();
 
         // If HTTP_X_FORWARDED_FOR is set, use that instead
-        if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
 
@@ -132,7 +157,8 @@ class GroupController extends Controller
             return redirect()->route('groups.index')->with('error', __('Group not found'));
         }
 
-        Device::where('group_id', $group->id)->update(['group_id' => null]);
+        $template = Template::whereId($group->template_id)->first();
+
 
         $group->delete();
 

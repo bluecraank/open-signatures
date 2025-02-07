@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('templates', function (Blueprint $table) {
+        Schema::create('aduser_group', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('html_content');
-            $table->text('plain_text_content');
-            $table->string('created_by');
+            $table->foreignId('aduser_id')->constrained("ad_users")->onDelete('cascade');
+            $table->foreignId('group_id')->constrained("groups")->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('templates');
+        Schema::dropIfExists('aduser_group');
     }
 };

@@ -31,7 +31,7 @@
                         @foreach ($groups as $group)
                             <tr>
                                 <td>{{ $group->name }}</td>
-                                <td>{{ $group->devices->count() }}</td>
+                                {{-- <td>{{ $group->devices->count() }}</td> --}}
                                 <td>{{ $group->template?->name ?? __('No template assigned') }}</td>
                                 <td>{{ $group->created_by }}</td>
                                 <td class="actions-cell">

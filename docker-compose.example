@@ -1,11 +1,11 @@
 services:
     app:
-        image: ghcr.io/bluecraank/open-signage:master
-        container_name: open-signage
+        image: ghcr.io/bluecraank/open-signatures:master
+        container_name: open-signatures
         volumes:
             - public:/var/www/html/public/data:rw
         networks:
-            - open-signage
+            - open-signatures
             - int_proxy
         depends_on:
             - db
@@ -16,7 +16,7 @@ services:
             DB_PORT: 3306
             DB_USERNAME: root
             DB_PASSWORD: random_root_password
-            DB_DATABASE: open-signage
+            DB_DATABASE: open-signatures
             LDAP_LOGGING: true
             LDAP_CONNECTION: default
             LDAP_HOST: some.dc.server
@@ -32,22 +32,22 @@ services:
             PROXY_URL: "https://mis.dc.server"
     db:
         image: mysql:8.0.34
-        container_name: open-signage-db
+        container_name: open-signatures-db
         restart: unless-stopped
         tty: true
         environment:
             TZ: 'Europe/Berlin'
-            MYSQL_DATABASE: open-signage
+            MYSQL_DATABASE: open-signatures
             MYSQL_ROOT_PASSWORD: random_root_password
             SERVICE_NAME: mysql
         networks:
-            - open-signage
+            - open-signatures
         volumes:
             - dbdata:/var/lib/mysql
 volumes:
     public:
     dbdata:
 networks:
-    open-signage:
+    open-signatures:
     int_proxy:
         external: true

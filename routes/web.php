@@ -76,8 +76,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 });
 
-Route::get('/ldap', [LdapAttributeController::class, 'getGroupsFromUser'])->middleware('auth:sanctum');
-
 Auth::routes();
 
 

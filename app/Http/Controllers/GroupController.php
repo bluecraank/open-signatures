@@ -81,6 +81,14 @@ class GroupController extends Controller
             }
         }
 
+        if ($request->groups && !$any_group) {
+            foreach ($request->groups as $group_id) {
+                $group = ADGroup::whereId($group_id)->first();
+                if (!$group) continue;
+                $group->groups()->attach($group);
+            }
+        }
+
         return redirect()->route('groups.index')->with('success', __('Group created'));
     }
 

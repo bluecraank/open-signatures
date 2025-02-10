@@ -28,4 +28,9 @@ class ADGroup extends Model
     {
         return $this->belongsToMany(Group::class, 'adgroup_group', 'adgroup_id', 'group_id');
     }
+
+    public function assignedGroupsByAny()
+    {
+        return Group::where('any_group', true)->get();
+    }
 }

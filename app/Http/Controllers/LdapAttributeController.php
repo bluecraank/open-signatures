@@ -29,4 +29,13 @@ class LdapAttributeController extends Controller
     public static function getLdapUsers() {
         return \LdapRecord\Models\ActiveDirectory\User::in('OU=Benutzer,DC=Doepke,DC=local')->get();
     }
+
+    public function getUserTemplates() {
+        $username = "fischer.nils";
+        $user = ADUser::where('username', $username)->first();
+
+        $templates = $user->getAssignedTemplates();
+
+        return json_encode($templates);
+    }
 }
